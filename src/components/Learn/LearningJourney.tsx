@@ -3,7 +3,7 @@ import React from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { BookOpen, DocumentIcon } from "@/components/ui/Icons";
+import { LearnIcon, DocumentIcon } from "@/components/ui/Icons";
 import { Progress } from "@/components/ui/progress";
 
 interface LearningJourneyProps {
@@ -27,7 +27,7 @@ const LearningJourney: React.FC<LearningJourneyProps> = ({ streakCount }) => {
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-2">
               <div className="bg-halal-green text-white p-2 rounded-full">
-                <BookOpen size={18} />
+                <LearnIcon size={18} />
               </div>
               <div>
                 <h3 className="text-lg font-medium">Halal Fundamentals</h3>

@@ -6,6 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ChecklistIcon, CompletedIcon } from "../ui/Icons";
 import { CheckSquare, AlertCircle, CheckCircle } from "lucide-react";
+import { checklistData } from "./checklistData";
 
 type ChecklistItemStatus = "not-started" | "in-progress" | "completed";
 
@@ -25,98 +26,51 @@ interface ChecklistCategory {
 const PHASES = ["pre-audit", "during-audit", "post-audit"];
 const SECTORS = ["food", "cosmetics", "pharmaceuticals"];
 
-// Sample checklist data
-const sampleChecklists: Record<string, ChecklistCategory[]> = {
-  "pre-audit": [
-    {
-      id: "documentation",
-      title: "Documentation",
-      items: [
-        {
-          id: "doc-1",
-          title: "Halal Policy",
-          description: "Establish and document a clear Halal policy for your organization",
-          status: "not-started",
-        },
-        {
-          id: "doc-2",
-          title: "Raw Material Documentation",
-          description: "Prepare documentation for all raw materials and their sources",
-          status: "not-started",
-        },
-        {
-          id: "doc-3",
-          title: "Process Flow Chart",
-          description: "Create detailed process flow charts for production",
-          status: "not-started",
-        },
-      ],
-    },
-    {
-      id: "premises",
-      title: "Premises Preparation",
-      items: [
-        {
-          id: "prem-1",
-          title: "Facility Cleanliness",
-          description: "Ensure facility meets halal cleanliness requirements",
-          status: "not-started",
-        },
-        {
-          id: "prem-2",
-          title: "Segregation Planning",
-          description: "Plan segregation of halal and non-halal materials",
-          status: "not-started",
-        },
-      ],
-    },
-  ],
-  "during-audit": [
-    {
-      id: "inspection",
-      title: "Inspection Process",
-      items: [
-        {
-          id: "insp-1",
-          title: "Present Documentation",
-          description: "Have all prepared documentation ready for auditors",
-          status: "not-started",
-        },
-        {
-          id: "insp-2",
-          title: "Facility Tour",
-          description: "Be prepared to guide auditors through your facility",
-          status: "not-started",
-        },
-      ],
-    },
-  ],
-  "post-audit": [
-    {
-      id: "maintenance",
-      title: "Certification Maintenance",
-      items: [
-        {
-          id: "maint-1",
-          title: "Regular Internal Audits",
-          description: "Conduct regular internal audits to maintain compliance",
-          status: "not-started",
-        },
-        {
-          id: "maint-2",
-          title: "Staff Training",
-          description: "Provide ongoing halal training for staff",
-          status: "not-started",
-        },
-      ],
-    },
-  ],
-};
-
 const ChecklistModule: React.FC = () => {
   const [activePhase, setActivePhase] = useState(PHASES[0]);
   const [activeSector, setActiveSector] = useState(SECTORS[0]);
-  const [checklists, setChecklists] = useState(sampleChecklists);
+  const [checklists, setChecklists] = useState(() => {
+    // Initialize checklist from data
+    const initialChecklists: Record<string, ChecklistCategory[]> = {};
+    
+    PHASES.forEach(phase => {
+      initialChecklists[phase] = [];
+      
+      // Determine which category based on phase
+      const categoryKey = phase === 'pre-audit' 
+        ? 'PreAuditReadiness' 
+        : phase === 'during-audit' 
+          ? 'DuringAudit' 
+          : 'PostAuditMaintenance';
+      
+      // Create a category for these items
+      const categoryId = phase;
+      const categoryTitle = phase === 'pre-audit' 
+        ? 'Pre-Audit Readiness' 
+        : phase === 'during-audit' 
+          ? 'During Audit' 
+          : 'Post-Audit Maintenance';
+      
+      // Get items from data based on sector and phase
+      const sectorData = checklistData[activeSector.charAt(0).toUpperCase() + activeSector.slice(1)];
+      if (sectorData && sectorData[categoryKey]) {
+        const checklistItems = sectorData[categoryKey].map((item, index) => ({
+          id: `${phase}-${index}`,
+          title: item.item,
+          description: item.description,
+          status: "not-started" as ChecklistItemStatus
+        }));
+        
+        initialChecklists[phase].push({
+          id: categoryId,
+          title: categoryTitle,
+          items: checklistItems
+        });
+      }
+    });
+    
+    return initialChecklists;
+  });
 
   const updateItemStatus = (categoryId: string, itemId: string, status: ChecklistItemStatus) => {
     setChecklists((prev) => {
@@ -153,6 +107,53 @@ const ChecklistModule: React.FC = () => {
     return Math.round((completed / items.length) * 100);
   };
 
+  // Update checklists when sector changes
+  const handleSectorChange = (sector: string) => {
+    setActiveSector(sector);
+    
+    // Reset and rebuild checklists for the new sector
+    const updatedChecklists: Record<string, ChecklistCategory[]> = {};
+    
+    PHASES.forEach(phase => {
+      updatedChecklists[phase] = [];
+      
+      // Determine which category based on phase
+      const categoryKey = phase === 'pre-audit' 
+        ? 'PreAuditReadiness' 
+        : phase === 'during-audit' 
+          ? 'DuringAudit' 
+          : 'PostAuditMaintenance';
+      
+      // Create a category for these items
+      const categoryId = phase;
+      const categoryTitle = phase === 'pre-audit' 
+        ? 'Pre-Audit Readiness' 
+        : phase === 'during-audit' 
+          ? 'During Audit' 
+          : 'Post-Audit Maintenance';
+      
+      // Get items from data based on sector and phase
+      const sectorData = checklistData[sector.charAt(0).toUpperCase() + sector.slice(1)];
+      
+      if (sectorData && sectorData[categoryKey]) {
+        const checklistItems = sectorData[categoryKey].map((item, index) => ({
+          id: `${phase}-${index}`,
+          title: item.item,
+          description: item.description,
+          status: "not-started" as ChecklistItemStatus
+        }));
+        
+        updatedChecklists[phase].push({
+          id: categoryId,
+          title: categoryTitle,
+          items: checklistItems
+        });
+      }
+    });
+    
+    setChecklists(updatedChecklists);
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
@@ -170,7 +171,7 @@ const ChecklistModule: React.FC = () => {
           <select
             className="border rounded-md p-2 text-sm"
             value={activeSector}
-            onChange={(e) => setActiveSector(e.target.value)}
+            onChange={(e) => handleSectorChange(e.target.value)}
           >
             {SECTORS.map((sector) => (
               <option key={sector} value={sector}>
