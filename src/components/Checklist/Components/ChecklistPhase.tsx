@@ -1,15 +1,9 @@
 
 import React from "react";
 import { TabsContent } from "@/components/ui/tabs";
-import ChecklistCategory, { ChecklistItemData } from "./ChecklistCategory";
-import { ChecklistItemStatus } from "../types/ChecklistTypes";
+import ChecklistCategory from "./ChecklistCategory";
+import { ChecklistItemStatus, ChecklistItemData, ChecklistCategoryData } from "../types/ChecklistTypes";
 import { useIsMobile } from "@/hooks/use-mobile";
-
-export interface ChecklistCategoryData {
-  id: string;
-  title: string;
-  items: ChecklistItemData[];
-}
 
 interface ChecklistPhaseProps {
   phase: string;

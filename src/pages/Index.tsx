@@ -6,6 +6,7 @@ import Layout from "@/components/Layout/Layout";
 import DashboardCard from "@/components/Dashboard/DashboardCard";
 import { ChecklistIcon, LearnIcon, ConnectIcon } from "@/components/ui/Icons";
 import ChecklistModule from "@/components/Checklist/ChecklistModule";
+import { AttachmentsProvider } from "@/components/Checklist/context/AttachmentsContext";
 
 const Index = () => {
   return (
@@ -72,7 +73,9 @@ const Index = () => {
 
       <section className="mb-12">
         <div className="border-t pt-12">
-          <ChecklistModule />
+          <AttachmentsProvider>
+            <ChecklistModule />
+          </AttachmentsProvider>
         </div>
       </section>
     </Layout>

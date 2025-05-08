@@ -1,8 +1,8 @@
 
 import { useState, useEffect } from "react";
 import { checklistData } from "../checklistData";
-import { ChecklistItemStatus } from "../Components/ChecklistItem";
-import { ChecklistCategoryData } from "../Components/ChecklistPhase";
+import { ChecklistItemStatus } from "../types/ChecklistTypes";
+import { ChecklistCategoryData } from "../types/ChecklistTypes";
 
 export const PHASES = ["pre-audit", "during-audit", "post-audit"];
 export const SECTORS = ["food", "cosmetics", "pharmaceuticals"];

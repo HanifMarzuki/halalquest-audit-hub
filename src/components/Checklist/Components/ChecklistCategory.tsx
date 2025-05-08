@@ -1,8 +1,8 @@
 
 import React from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import ChecklistItem, { ChecklistItemStatus } from "./ChecklistItem";
-import { ChecklistItemData } from "../types/ChecklistTypes";
+import ChecklistItem from "./ChecklistItem";
+import { ChecklistItemStatus, ChecklistItemData } from "../types/ChecklistTypes";
 
 interface ChecklistCategoryProps {
   id: string;
