@@ -5,7 +5,6 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { Link } from "react-router-dom";
 import { AttachmentsIcon } from "../ui/Icons";
 import { useLocation } from "react-router-dom";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -26,19 +25,12 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       
       {!isAttachmentsPage && (
         <div className="fixed bottom-6 right-6">
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Link to="/attachments">
-                <button className="bg-halal-blue-dark hover:bg-halal-blue text-white p-3 rounded-full shadow-lg flex items-center justify-center transition-all hover:scale-105">
-                  <AttachmentsIcon size={20} />
-                  <span className="sr-only">View All Attachments</span>
-                </button>
-              </Link>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>View All Attachments</p>
-            </TooltipContent>
-          </Tooltip>
+          <Link to="/attachments">
+            <button className="bg-halal-blue-dark hover:bg-halal-blue text-white p-3 rounded-full shadow-lg flex items-center justify-center transition-all hover:scale-105">
+              <AttachmentsIcon size={20} />
+              <span className="sr-only">View All Attachments</span>
+            </button>
+          </Link>
         </div>
       )}
       
