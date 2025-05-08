@@ -2,6 +2,9 @@
 import React from "react";
 import Navbar from "./Navbar";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { Link } from "react-router-dom";
+import { AttachmentsIcon } from "../ui/Icons";
+import { useLocation } from "react-router-dom";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -9,6 +12,9 @@ interface LayoutProps {
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const isMobile = useIsMobile();
+  const location = useLocation();
+  
+  const isAttachmentsPage = location.pathname === "/attachments";
   
   return (
     <div className="flex flex-col min-h-screen">
@@ -16,6 +22,18 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       <main className={`flex-1 container mx-auto ${isMobile ? 'px-4 py-4' : 'px-4 py-6'}`}>
         {children}
       </main>
+      
+      {!isAttachmentsPage && (
+        <div className="fixed bottom-6 right-6">
+          <Link to="/attachments">
+            <button className="bg-halal-blue-dark hover:bg-halal-blue text-white p-3 rounded-full shadow-lg flex items-center justify-center transition-all hover:scale-105">
+              <AttachmentsIcon size={20} />
+              <span className="sr-only">View All Attachments</span>
+            </button>
+          </Link>
+        </div>
+      )}
+      
       <footer className="bg-halal-blue-dark text-white py-6">
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row justify-between items-center">

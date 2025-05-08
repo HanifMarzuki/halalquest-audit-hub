@@ -10,7 +10,10 @@ import {
   MessageSquare,
   User,
   Download,
-  FileDown
+  FileDown,
+  Paperclip,
+  File,
+  Files
 } from "lucide-react";
 
 export const ChecklistIcon = CheckSquare;
@@ -23,3 +26,6 @@ export const ChatIcon = MessageSquare;
 export const ProfileIcon = User;
 export const CompletedIcon = Check;
 export const DownloadIcon = FileDown;
+export const AttachmentIcon = Paperclip;
+export const ReportIcon = File;
+export const AttachmentsIcon = Files;

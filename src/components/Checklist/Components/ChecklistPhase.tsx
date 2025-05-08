@@ -2,7 +2,7 @@
 import React from "react";
 import { TabsContent } from "@/components/ui/tabs";
 import ChecklistCategory, { ChecklistItemData } from "./ChecklistCategory";
-import { ChecklistItemStatus } from "./ChecklistItem";
+import { ChecklistItemStatus } from "../types/ChecklistTypes";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 export interface ChecklistCategoryData {
@@ -34,6 +34,7 @@ const ChecklistPhase: React.FC<ChecklistPhaseProps> = ({
             title={category.title}
             items={category.items}
             onStatusChange={onStatusChange}
+            phase={phase}
           />
         ))}
       </div>

@@ -2,18 +2,13 @@
 import React from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import ChecklistItem, { ChecklistItemStatus } from "./ChecklistItem";
-
-export interface ChecklistItemData {
-  id: string;
-  title: string;
-  description: string;
-  status: ChecklistItemStatus;
-}
+import { ChecklistItemData } from "../types/ChecklistTypes";
 
 interface ChecklistCategoryProps {
   id: string;
   title: string;
   items: ChecklistItemData[];
+  phase: string;
   onStatusChange: (categoryId: string, itemId: string, status: ChecklistItemStatus) => void;
 }
 
@@ -21,6 +16,7 @@ const ChecklistCategory: React.FC<ChecklistCategoryProps> = ({
   id,
   title,
   items,
+  phase,
   onStatusChange,
 }) => {
   return (
@@ -41,6 +37,7 @@ const ChecklistCategory: React.FC<ChecklistCategoryProps> = ({
               description={item.description}
               status={item.status}
               categoryId={id}
+              phase={phase}
               onStatusChange={onStatusChange}
             />
           ))}

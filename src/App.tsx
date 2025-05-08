@@ -8,6 +8,7 @@ import Index from "./pages/Index";
 import Checklist from "./pages/Checklist";
 import Learn from "./pages/Learn";
 import Connect from "./pages/Connect";
+import Attachments from "./pages/Attachments";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -23,6 +24,7 @@ const App = () => (
           <Route path="/checklist" element={<Checklist />} />
           <Route path="/learn" element={<Learn />} />
           <Route path="/connect" element={<Connect />} />
+          <Route path="/attachments" element={<Attachments />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
