@@ -8,7 +8,9 @@ import {
   FileText, 
   Calendar, 
   MessageSquare,
-  User 
+  User,
+  Download,
+  FileDown
 } from "lucide-react";
 
 export const ChecklistIcon = CheckSquare;
@@ -20,3 +22,4 @@ export const CalendarIcon = Calendar;
 export const ChatIcon = MessageSquare;
 export const ProfileIcon = User;
 export const CompletedIcon = Check;
+export const DownloadIcon = FileDown;
