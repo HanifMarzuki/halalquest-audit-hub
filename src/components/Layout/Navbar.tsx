@@ -1,21 +1,66 @@
 
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { User, Menu, X } from "lucide-react";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { cn } from "@/lib/utils";
 
 const Navbar: React.FC = () => {
   const isMobile = useIsMobile();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const location = useLocation();
+  
+  const isActive = (path: string) => location.pathname === path;
   
   const NavLinks = () => (
-    <div className="flex flex-col md:flex-row gap-4">
-      <Link to="/" className="hover:text-halal-green font-medium">Home</Link>
-      <Link to="/checklist" className="hover:text-halal-green font-medium">Audit Checklist</Link>
-      <Link to="/learn" className="hover:text-halal-green font-medium">Learn</Link>
-      <Link to="/connect" className="hover:text-halal-green font-medium">Connect</Link>
+    <div className="flex flex-col md:flex-row gap-6">
+      <Link 
+        to="/" 
+        className={cn(
+          "hover:text-halal-green font-medium transition-colors",
+          isActive("/") && "text-halal-green"
+        )}
+      >
+        Home
+      </Link>
+      <Link 
+        to="/checklist" 
+        className={cn(
+          "hover:text-halal-green font-medium transition-colors",
+          isActive("/checklist") && "text-halal-green"
+        )}
+      >
+        Audit Checklist
+      </Link>
+      <Link 
+        to="/learn" 
+        className={cn(
+          "hover:text-halal-green font-medium transition-colors",
+          isActive("/learn") && "text-halal-green"
+        )}
+      >
+        Learn
+      </Link>
+      <Link 
+        to="/connect" 
+        className={cn(
+          "hover:text-halal-green font-medium transition-colors",
+          isActive("/connect") && "text-halal-green"
+        )}
+      >
+        Connect
+      </Link>
+      <Link 
+        to="/attachments" 
+        className={cn(
+          "hover:text-halal-green font-medium transition-colors",
+          isActive("/attachments") && "text-halal-green"
+        )}
+      >
+        Attachments
+      </Link>
     </div>
   );
   
@@ -31,7 +76,7 @@ const Navbar: React.FC = () => {
           
           {/* Desktop Navigation */}
           {!isMobile && (
-            <div className="ml-8 hidden md:flex space-x-6">
+            <div className="ml-10 hidden md:flex space-x-1">
               <NavLinks />
             </div>
           )}
@@ -60,7 +105,7 @@ const Navbar: React.FC = () => {
                 </SheetHeader>
                 <div className="flex flex-col gap-6 py-6">
                   <NavLinks />
-                  <div className="space-y-3">
+                  <div className="space-y-3 pt-4 border-t">
                     <Button variant="outline" className="w-full gap-2">
                       <User size={18} />
                       <span>Sign In</span>
