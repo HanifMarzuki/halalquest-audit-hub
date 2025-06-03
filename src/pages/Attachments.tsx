@@ -9,6 +9,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useIsMobile } from "@/hooks/use-mobile";
+import ErrorBoundary from "@/components/ErrorBoundary";
 
 const AttachmentsContent = () => {
   const { getAllAttachments, removeAttachment } = useAttachments();
@@ -32,6 +33,44 @@ const AttachmentsContent = () => {
       .join(" ");
   };
 
+  // Mobile card view for better UX
+  const MobileAttachmentCard = ({ attachment }: { attachment: any }) => (
+    <Card key={attachment.id} className="mb-4">
+      <CardContent className="p-4">
+        <div className="space-y-2">
+          <a 
+            href={attachment.url} 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="text-blue-600 hover:underline font-medium block"
+          >
+            {attachment.name}
+          </a>
+          <div className="text-sm text-muted-foreground space-y-1">
+            <p>Type: {attachment.type.toUpperCase()}</p>
+            <p>Phase: {getPhaseForDisplay(attachment.phase)}</p>
+            <p>Added: {formatDate(attachment.dateAdded)}</p>
+          </div>
+          <div className="flex gap-2 pt-2">
+            <Button variant="ghost" size="sm" asChild className="flex-1">
+              <a href={attachment.url} target="_blank" rel="noopener noreferrer">
+                View
+              </a>
+            </Button>
+            <Button 
+              variant="destructive" 
+              size="sm"
+              onClick={() => removeAttachment(attachment.id)}
+              className="flex-1"
+            >
+              Delete
+            </Button>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
+
   return (
     <Layout>
       <div className="py-6 space-y-6">
@@ -52,6 +91,7 @@ const AttachmentsContent = () => {
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="h-9"
+              aria-label="Search attachments"
             />
           </div>
         </div>
@@ -63,8 +103,19 @@ const AttachmentsContent = () => {
           <CardContent>
             {attachments.length === 0 ? (
               <div className="text-center py-8 text-muted-foreground">
+                <AttachmentsIcon size={48} className="mx-auto mb-4 opacity-50" />
                 <p>No attachments have been added yet.</p>
                 <p className="text-sm mt-1">Add files to checklist items to see them here.</p>
+              </div>
+            ) : filteredAttachments.length === 0 ? (
+              <div className="text-center py-8 text-muted-foreground">
+                <p>No attachments found matching "{searchTerm}"</p>
+              </div>
+            ) : isMobile ? (
+              <div>
+                {filteredAttachments.map((attachment) => (
+                  <MobileAttachmentCard key={attachment.id} attachment={attachment} />
+                ))}
               </div>
             ) : (
               <div className="overflow-x-auto">
@@ -72,49 +123,41 @@ const AttachmentsContent = () => {
                   <TableHeader>
                     <TableRow>
                       <TableHead>Name</TableHead>
-                      {!isMobile && <TableHead>Type</TableHead>}
+                      <TableHead>Type</TableHead>
                       <TableHead>Phase</TableHead>
-                      {!isMobile && <TableHead>Date Added</TableHead>}
+                      <TableHead>Date Added</TableHead>
                       <TableHead className="text-right">Actions</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {filteredAttachments.length === 0 ? (
-                      <TableRow>
-                        <TableCell colSpan={5} className="text-center py-4 text-muted-foreground">
-                          No attachments found matching "{searchTerm}"
+                    {filteredAttachments.map((attachment) => (
+                      <TableRow key={attachment.id}>
+                        <TableCell className="font-medium">
+                          <a href={attachment.url} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
+                            {attachment.name}
+                          </a>
+                        </TableCell>
+                        <TableCell>{attachment.type.toUpperCase()}</TableCell>
+                        <TableCell>{getPhaseForDisplay(attachment.phase)}</TableCell>
+                        <TableCell>{formatDate(attachment.dateAdded)}</TableCell>
+                        <TableCell className="text-right">
+                          <div className="flex justify-end gap-2">
+                            <Button variant="ghost" size="sm" asChild>
+                              <a href={attachment.url} target="_blank" rel="noopener noreferrer">
+                                View
+                              </a>
+                            </Button>
+                            <Button 
+                              variant="destructive" 
+                              size="sm"
+                              onClick={() => removeAttachment(attachment.id)}
+                            >
+                              Delete
+                            </Button>
+                          </div>
                         </TableCell>
                       </TableRow>
-                    ) : (
-                      filteredAttachments.map((attachment) => (
-                        <TableRow key={attachment.id}>
-                          <TableCell className="font-medium">
-                            <a href={attachment.url} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
-                              {attachment.name}
-                            </a>
-                          </TableCell>
-                          {!isMobile && <TableCell>{attachment.type.toUpperCase()}</TableCell>}
-                          <TableCell>{getPhaseForDisplay(attachment.phase)}</TableCell>
-                          {!isMobile && <TableCell>{formatDate(attachment.dateAdded)}</TableCell>}
-                          <TableCell className="text-right">
-                            <div className="flex justify-end gap-2">
-                              <Button variant="ghost" size="sm" asChild>
-                                <a href={attachment.url} target="_blank" rel="noopener noreferrer">
-                                  View
-                                </a>
-                              </Button>
-                              <Button 
-                                variant="destructive" 
-                                size="sm"
-                                onClick={() => removeAttachment(attachment.id)}
-                              >
-                                Delete
-                              </Button>
-                            </div>
-                          </TableCell>
-                        </TableRow>
-                      ))
-                    )}
+                    ))}
                   </TableBody>
                 </Table>
               </div>
@@ -128,9 +171,11 @@ const AttachmentsContent = () => {
 
 const Attachments = () => {
   return (
-    <AttachmentsProvider>
-      <AttachmentsContent />
-    </AttachmentsProvider>
+    <ErrorBoundary>
+      <AttachmentsProvider>
+        <AttachmentsContent />
+      </AttachmentsProvider>
+    </ErrorBoundary>
   );
 };
 

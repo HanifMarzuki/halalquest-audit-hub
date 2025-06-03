@@ -5,6 +5,7 @@ import ChecklistHeader from "./Components/ChecklistHeader";
 import ChecklistPhase from "./Components/ChecklistPhase";
 import { useChecklistData, PHASES } from "./hooks/useChecklistData";
 import { AttachmentsProvider } from "./context/AttachmentsContext";
+import ErrorBoundary from "@/components/ErrorBoundary";
 
 const ChecklistModule: React.FC = () => {
   const {
@@ -18,37 +19,43 @@ const ChecklistModule: React.FC = () => {
   } = useChecklistData();
 
   return (
-    <AttachmentsProvider>
-      <div className="space-y-6">
-        <ChecklistHeader 
-          activeSector={activeSector}
-          progressPercentage={getProgressPercentage()}
-          onSectorChange={handleSectorChange}
-        />
+    <ErrorBoundary>
+      <AttachmentsProvider>
+        <div className="space-y-6">
+          <ChecklistHeader 
+            activeSector={activeSector}
+            progressPercentage={getProgressPercentage}
+            onSectorChange={handleSectorChange}
+          />
 
-        <Tabs defaultValue={activePhase} onValueChange={setActivePhase}>
-          <TabsList className="grid grid-cols-3 mb-6">
+          <Tabs defaultValue={activePhase} onValueChange={setActivePhase}>
+            <TabsList className="grid grid-cols-3 mb-6 w-full">
+              {PHASES.map((phase) => (
+                <TabsTrigger 
+                  key={phase} 
+                  value={phase}
+                  className="text-xs md:text-sm"
+                >
+                  {phase
+                    .split("-")
+                    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+                    .join(" ")}
+                </TabsTrigger>
+              ))}
+            </TabsList>
+
             {PHASES.map((phase) => (
-              <TabsTrigger key={phase} value={phase}>
-                {phase
-                  .split("-")
-                  .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-                  .join(" ")}
-              </TabsTrigger>
+              <ChecklistPhase
+                key={phase}
+                phase={phase}
+                categories={checklists[phase] || []}
+                onStatusChange={updateItemStatus}
+              />
             ))}
-          </TabsList>
-
-          {PHASES.map((phase) => (
-            <ChecklistPhase
-              key={phase}
-              phase={phase}
-              categories={checklists[phase]}
-              onStatusChange={updateItemStatus}
-            />
-          ))}
-        </Tabs>
-      </div>
-    </AttachmentsProvider>
+          </Tabs>
+        </div>
+      </AttachmentsProvider>
+    </ErrorBoundary>
   );
 };
 
