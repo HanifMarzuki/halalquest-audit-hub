@@ -35,11 +35,12 @@ const ReportGenerator: React.FC<ReportGeneratorProps> = ({ activeSector }) => {
     // 3. Include attachments if selected
     // 4. Trigger a download
     
+    const progressValue = getProgressPercentage();
     console.log("Generating report with settings:", {
       sector: activeSector,
       includeAttachments,
       includeIncompleteItems,
-      progress: getProgressPercentage(),
+      progress: progressValue,
       attachmentsCount: getAllAttachments().length
     });
     
@@ -52,6 +53,8 @@ const ReportGenerator: React.FC<ReportGeneratorProps> = ({ activeSector }) => {
       link.click();
     }, 1500);
   };
+
+  const progressValue = getProgressPercentage();
 
   return (
     <Dialog>
@@ -91,7 +94,7 @@ const ReportGenerator: React.FC<ReportGeneratorProps> = ({ activeSector }) => {
             <h4 className="text-sm font-medium mb-1">Report Details</h4>
             <ul className="text-sm text-gray-600 space-y-1">
               <li>Sector: <span className="font-medium">{activeSector.charAt(0).toUpperCase() + activeSector.slice(1)}</span></li>
-              <li>Completion: <span className="font-medium">{getProgressPercentage()}%</span></li>
+              <li>Completion: <span className="font-medium">{progressValue}%</span></li>
               <li>Generated on: <span className="font-medium">{new Date().toLocaleDateString()}</span></li>
             </ul>
           </div>
