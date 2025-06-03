@@ -13,6 +13,7 @@ const Checklist = lazy(() => import("./pages/Checklist"));
 const Learn = lazy(() => import("./pages/Learn"));
 const Connect = lazy(() => import("./pages/Connect"));
 const Attachments = lazy(() => import("./pages/Attachments"));
+const Admin = lazy(() => import("./pages/Admin"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient({
@@ -45,6 +46,7 @@ const App = () => (
               <Route path="/learn" element={<Learn />} />
               <Route path="/connect" element={<Connect />} />
               <Route path="/attachments" element={<Attachments />} />
+              <Route path="/admin" element={<Admin />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>

@@ -2,13 +2,14 @@
 import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { User, Menu, X, ChevronDown } from "lucide-react";
+import { User, Menu, X, ChevronDown, Shield } from "lucide-react";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { 
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
+  DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 import { useIsMobile } from "@/hooks/use-mobile";
 
@@ -72,6 +73,13 @@ const Navbar: React.FC = () => {
         <DropdownMenuItem asChild>
           <Link to="/connect" className="w-full">
             Find Expert
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem asChild>
+          <Link to="/admin" className="w-full flex items-center gap-2">
+            <Shield size={16} />
+            Admin Panel
           </Link>
         </DropdownMenuItem>
       </DropdownMenuContent>
@@ -149,6 +157,12 @@ const Navbar: React.FC = () => {
                         </Button>
                       </Link>
                     </div>
+                    <Link to="/admin" onClick={() => setIsMenuOpen(false)}>
+                      <Button variant="outline" size="sm" className="w-full gap-2">
+                        <Shield size={16} />
+                        Admin
+                      </Button>
+                    </Link>
                   </div>
                   
                   {/* Account Actions */}
