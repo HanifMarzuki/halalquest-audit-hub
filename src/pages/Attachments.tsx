@@ -3,13 +3,14 @@ import React, { useState } from "react";
 import Layout from "@/components/Layout/Layout";
 import { AttachmentsIcon } from "@/components/ui/Icons";
 import { useAttachments } from "@/components/Checklist/context/AttachmentsContext";
+import { AttachmentsProvider } from "@/components/Checklist/context/AttachmentsContext";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useIsMobile } from "@/hooks/use-mobile";
 
-const Attachments = () => {
+const AttachmentsContent = () => {
   const { getAllAttachments, removeAttachment } = useAttachments();
   const [searchTerm, setSearchTerm] = useState("");
   const isMobile = useIsMobile();
@@ -122,6 +123,14 @@ const Attachments = () => {
         </Card>
       </div>
     </Layout>
+  );
+};
+
+const Attachments = () => {
+  return (
+    <AttachmentsProvider>
+      <AttachmentsContent />
+    </AttachmentsProvider>
   );
 };
 
