@@ -2,81 +2,185 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import Layout from "@/components/Layout/Layout";
-import DashboardCard from "@/components/Dashboard/DashboardCard";
-import { ChecklistIcon, LearnIcon, ConnectIcon } from "@/components/ui/Icons";
-import ChecklistModule from "@/components/Checklist/ChecklistModule";
-import { AttachmentsProvider } from "@/components/Checklist/context/AttachmentsContext";
+import { ChecklistIcon, LearnIcon, ConnectIcon, AttachmentsIcon } from "@/components/ui/Icons";
+import { ChevronRight, Zap, Shield, Users } from "lucide-react";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const Index = () => {
+  const isMobile = useIsMobile();
+
+  const quickActions = [
+    {
+      title: "Start Audit",
+      description: "Begin your halal certification journey",
+      icon: ChecklistIcon,
+      to: "/checklist",
+      color: "bg-halal-green",
+      hoverColor: "hover:bg-halal-green-light"
+    },
+    {
+      title: "Learn",
+      description: "Educational resources and guides",
+      icon: LearnIcon,
+      to: "/learn",
+      color: "bg-halal-blue",
+      hoverColor: "hover:bg-halal-blue-light"
+    },
+    {
+      title: "Connect",
+      description: "Expert consultation and support",
+      icon: ConnectIcon,
+      to: "/connect",
+      color: "bg-halal-gold",
+      hoverColor: "hover:bg-amber-500"
+    },
+    {
+      title: "Attachments",
+      description: "Manage your documents",
+      icon: AttachmentsIcon,
+      to: "/attachments",
+      color: "bg-purple-600",
+      hoverColor: "hover:bg-purple-700"
+    }
+  ];
+
+  const features = [
+    {
+      icon: Zap,
+      title: "Quick Assessment",
+      description: "Complete pre-audit checks in minutes"
+    },
+    {
+      icon: Shield,
+      title: "Compliance Ready",
+      description: "Stay audit-ready with real-time tracking"
+    },
+    {
+      icon: Users,
+      title: "Expert Support",
+      description: "Connect with halal certification experts"
+    }
+  ];
+
   return (
     <Layout>
-      <section className="py-10 mb-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-          <div className="space-y-6">
-            <h1 className="text-4xl md:text-5xl font-bold leading-tight">
-              Your Guide to <span className="text-halal-green">Halal</span> Compliance
-            </h1>
-            <p className="text-lg text-muted-foreground">
-              HalalQuest helps businesses prepare for, obtain, and maintain halal certification
-              with self-assessments, educational resources, and expert guidance.
-            </p>
-            <div className="flex flex-wrap gap-4">
-              <Button className="bg-halal-green hover:bg-halal-green-light text-white">
-                Start Self-Audit
+      {/* Hero Section */}
+      <section className={`${isMobile ? 'py-8' : 'py-12'} text-center`}>
+        <div className="max-w-3xl mx-auto space-y-6">
+          <h1 className={`${isMobile ? 'text-3xl' : 'text-5xl'} font-bold leading-tight`}>
+            Your <span className="text-halal-green">Halal</span> Certification Hub
+          </h1>
+          <p className={`${isMobile ? 'text-base' : 'text-lg'} text-muted-foreground px-4`}>
+            Streamlined tools for halal compliance, audit preparation, and certification maintenance
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center px-4">
+            <Link to="/checklist">
+              <Button 
+                size={isMobile ? "default" : "lg"} 
+                className="bg-halal-green hover:bg-halal-green-light text-white w-full sm:w-auto"
+              >
+                Start Your Audit
+                <ChevronRight className="ml-2 h-4 w-4" />
               </Button>
-              <Button variant="outline">
+            </Link>
+            <Link to="/learn">
+              <Button 
+                variant="outline" 
+                size={isMobile ? "default" : "lg"}
+                className="w-full sm:w-auto"
+              >
                 Learn More
               </Button>
-            </div>
-          </div>
-          <div className="hidden lg:block">
-            <div className="relative">
-              <div className="absolute -top-10 -left-10 w-64 h-64 bg-halal-green/5 rounded-full"></div>
-              <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-halal-gold/5 rounded-full"></div>
-              <img 
-                src="https://images.unsplash.com/photo-1466442929976-97f336a657be?auto=format&fit=crop&w=800&q=80" 
-                alt="Halal Certification" 
-                className="relative z-10 rounded-lg shadow-lg object-cover w-full h-80"
-              />
-            </div>
+            </Link>
           </div>
         </div>
       </section>
 
-      <section className="mb-16">
-        <h2 className="text-2xl font-bold mb-6">Explore HalalQuest</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <DashboardCard
-            title="Audit Checklist"
-            description="Evaluate your business's halal readiness with comprehensive checklists"
-            icon={ChecklistIcon}
-            to="/checklist"
-            iconClassName="bg-halal-green/10 text-halal-green"
-          />
-          <DashboardCard
-            title="Knowledge Base"
-            description="Learn about halal standards through courses, videos, and readings"
-            icon={LearnIcon}
-            to="/learn"
-            iconClassName="bg-halal-blue/10 text-halal-blue"
-          />
-          <DashboardCard
-            title="Expert Network"
-            description="Connect with halal industry experts for guidance and consultation"
-            icon={ConnectIcon}
-            to="/connect"
-            iconClassName="bg-halal-gold/10 text-halal-gold"
-          />
+      {/* Quick Actions Grid */}
+      <section className={`${isMobile ? 'py-8' : 'py-12'}`}>
+        <div className="text-center mb-8">
+          <h2 className={`${isMobile ? 'text-xl' : 'text-2xl'} font-bold mb-2`}>
+            Quick Actions
+          </h2>
+          <p className="text-muted-foreground">
+            Everything you need for halal compliance
+          </p>
+        </div>
+        
+        <div className={`grid ${isMobile ? 'grid-cols-2 gap-4' : 'grid-cols-2 md:grid-cols-4 gap-6'}`}>
+          {quickActions.map((action, index) => (
+            <Link key={index} to={action.to} className="group">
+              <Card className="h-full transition-all duration-200 hover:shadow-lg hover:scale-105 border-0 shadow-md">
+                <CardContent className="p-6 text-center space-y-4">
+                  <div className={`${action.color} ${action.hoverColor} w-12 h-12 rounded-full flex items-center justify-center mx-auto transition-colors`}>
+                    <action.icon size={24} className="text-white" />
+                  </div>
+                  <div>
+                    <h3 className={`${isMobile ? 'text-sm' : 'text-base'} font-semibold mb-1`}>
+                      {action.title}
+                    </h3>
+                    <p className={`${isMobile ? 'text-xs' : 'text-sm'} text-muted-foreground`}>
+                      {action.description}
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+            </Link>
+          ))}
         </div>
       </section>
 
-      <section className="mb-12">
-        <div className="border-t pt-12">
-          <AttachmentsProvider>
-            <ChecklistModule />
-          </AttachmentsProvider>
+      {/* Features Section */}
+      <section className={`${isMobile ? 'py-8' : 'py-12'} bg-gray-50 rounded-lg`}>
+        <div className="text-center mb-8">
+          <h2 className={`${isMobile ? 'text-xl' : 'text-2xl'} font-bold mb-2`}>
+            Why Choose HalalQuest?
+          </h2>
         </div>
+        
+        <div className={`grid ${isMobile ? 'grid-cols-1 gap-6' : 'grid-cols-1 md:grid-cols-3 gap-8'}`}>
+          {features.map((feature, index) => (
+            <div key={index} className="text-center space-y-4">
+              <div className="bg-white w-16 h-16 rounded-full flex items-center justify-center mx-auto shadow-md">
+                <feature.icon size={28} className="text-halal-green" />
+              </div>
+              <div>
+                <h3 className={`${isMobile ? 'text-base' : 'text-lg'} font-semibold mb-2`}>
+                  {feature.title}
+                </h3>
+                <p className={`${isMobile ? 'text-sm' : 'text-base'} text-muted-foreground`}>
+                  {feature.description}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Call to Action */}
+      <section className={`${isMobile ? 'py-8' : 'py-12'} text-center`}>
+        <Card className="bg-halal-green text-white border-0">
+          <CardContent className="p-8">
+            <h2 className={`${isMobile ? 'text-xl' : 'text-2xl'} font-bold mb-4`}>
+              Ready to Get Started?
+            </h2>
+            <p className={`${isMobile ? 'text-sm' : 'text-base'} mb-6 opacity-90`}>
+              Begin your halal certification journey today with our comprehensive audit tools
+            </p>
+            <Link to="/checklist">
+              <Button 
+                variant="secondary" 
+                size={isMobile ? "default" : "lg"}
+                className="bg-white text-halal-green hover:bg-gray-100"
+              >
+                Start Free Audit
+                <ChevronRight className="ml-2 h-4 w-4" />
+              </Button>
+            </Link>
+          </CardContent>
+        </Card>
       </section>
     </Layout>
   );
